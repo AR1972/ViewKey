@@ -45,7 +45,7 @@ int _tmain(int argc, _TCHAR* argv[])
 	isWin8 = (KeyData[66] >> 3) & 1;
 
 	KeyData[66] = (KeyData[66] & 0xF7) | ((isWin8 & 2) << 2);
-
+	/* decode the key */
 	do {
 		int Cur = 0;
 		int X = 14;
@@ -62,12 +62,16 @@ int _tmain(int argc, _TCHAR* argv[])
 	} while (i >= 0);
 
 	if (isWin8) {
-		strncpy(NewKeyOutput, KeyOutput + 1, Last);
+		/* copy first part of key into new array */
+		memcpy(NewKeyOutput, KeyOutput, Last);
+		/* set the 'N' in the new array */
 		NewKeyOutput[Last] = 'N';
-		strncpy(NewKeyOutput + Last + 1, KeyOutput + Last + 1, sizeof(KeyOutput));
-		strncpy(KeyOutput, NewKeyOutput, sizeof(KeyOutput));
+		/* copy the second part of the key into the new array after 'N' */
+		memcpy(&NewKeyOutput[Last + 1], &KeyOutput[Last + 1], sizeof(KeyOutput) - (Last + 1));
+		/* copy the finished key back into the original array */
+		memcpy(&KeyOutput[0], &NewKeyOutput[0], sizeof(KeyOutput));
 	}
-
+	/* display the key */
 	for(int i = 0; i < sizeof(KeyOutput); i++) {
 		if (i == 5 || i == 10 || i == 15 || i == 20)  {
 			printf("%c", '-');
