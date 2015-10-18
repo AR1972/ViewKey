@@ -63,7 +63,7 @@ int _tmain(int argc, _TCHAR* argv[])
 
 	if (isWin8) {
 		/* copy first part of key into new array */
-		memcpy(NewKeyOutput, KeyOutput, Last);
+		memcpy(NewKeyOutput, &KeyOutput[1], Last);
 		/* set the 'N' in the new array */
 		NewKeyOutput[Last] = 'N';
 		/* copy the second part of the key into the new array after 'N' */
@@ -83,4 +83,3 @@ int _tmain(int argc, _TCHAR* argv[])
 	Sleep(30000);
 	return Status;
 }
-
